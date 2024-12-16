@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MyBuilder
+﻿namespace MyBuilder
 {
     public class VersionChanger
     {
         /// <summary>
         /// バージョンを変更する
         /// </summary>
-        public static void ChangeVersions(string projectPath, int updateVersion = 0, string? newVersion = null)
+        public static void ChangeVersions(string projectPath, bool sdkBuild, int updateVersion = 0, string? newVersion = null)
         {
-            foreach (var assemblyInfoPath in GetAssemblyInfoPaths(projectPath))
+            foreach (var appVersion in GetFilePaths(projectPath, sdkBuild))
             {
                 if (string.IsNullOrWhiteSpace(newVersion) && updateVersion > 0)
                 {
-                    var version = GetVersion(assemblyInfoPath);
+                    var version = appVersion.GetVersion();
                     if (updateVersion == 1)
                     {
                         newVersion = VersionIncreaser.IncreaseMajorVersion(version);
@@ -44,52 +38,15 @@ namespace MyBuilder
                 {
                     throw new ArgumentException("versionが指定されませんでした");
                 }
-                UpdateVersion(assemblyInfoPath, newVersion);
+
+                appVersion.UpdateVersion(newVersion);
+                Console.WriteLine($"Assembly Version を変更しました。（{newVersion}）");
             }
         }
 
-        private static IEnumerable<string> GetAssemblyInfoPaths(string projectPath)
+        private static IEnumerable<IAppVersion> GetFilePaths(string projectPath, bool sdkBuild)
         {
-            return Directory.GetFiles(Path.GetDirectoryName(projectPath), "assemblyinfo.cs", SearchOption.AllDirectories);
-        }
-
-        private static string GetVersion(string assemblyInfoPath)
-        {
-            if (assemblyInfoPath == null)
-            {
-                throw new Exception("AssemblyInfo.csが見つかりません。");
-            }
-            var lines = File.ReadAllLines(assemblyInfoPath);
-            var versionLine = lines.FirstOrDefault(x => x.Contains("AssemblyVersion", StringComparison.OrdinalIgnoreCase));
-            if (versionLine == null)
-            {
-                throw new Exception("AssemblyVersionが見つかりません。");
-            }
-            var version = versionLine.Split('"')[1];
-            return version;
-        }
-
-        private static void UpdateVersion(string assemblyInfoPath, string newVersion)
-        {
-            var lines = File.ReadAllLines(assemblyInfoPath);
-            var newLines = new List<string>();
-
-            foreach (var line in lines)
-            {
-                if (line.Contains("AssemblyVersion", StringComparison.OrdinalIgnoreCase))
-                {
-                    newLines.Add($"[assembly: AssemblyVersion(\"{newVersion}\")]");
-                }
-                else if (line.Contains("AssemblyFileVersion", StringComparison.OrdinalIgnoreCase))
-                {
-                    newLines.Add($"[assembly: AssemblyFileVersion(\"{newVersion}\")]");
-                }
-                else
-                {
-                    newLines.Add(line);
-                }
-            }
-            File.WriteAllLines(assemblyInfoPath, newLines);
+            return sdkBuild ? AppVersionDotNetSdk.GetFiles(projectPath) : AppVersionDotnetFramework.GetFiles(projectPath);
         }
     }
 }

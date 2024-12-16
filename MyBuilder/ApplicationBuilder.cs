@@ -5,6 +5,13 @@ namespace MyBuilder
 {
     public class ApplicationBuilder
     {
+        /// <summary>
+        /// アプリケーションをビルドする
+        /// </summary>
+        /// <param name="projectPath"></param>
+        /// <param name="configuration"></param>
+        /// <param name="platform"></param>
+        /// <param name="outputDir"></param>
         public static void Build(string projectPath, string configuration, string platform, string outputDir)
         {
             Console.WriteLine($"ビルドを開始します。");
@@ -19,6 +26,7 @@ namespace MyBuilder
                 FileName = GetMsBuildPath(),
                 Arguments = $"\"{projectPath}\" /p:Configuration={configuration} /p:Platform=\"{platform}\" /p:OutputPath=\"{outputDir}\"",
                 RedirectStandardOutput = true,
+                StandardOutputEncoding = System.Text.Encoding.UTF8,
                 UseShellExecute = false,
                 CreateNoWindow = true
             };

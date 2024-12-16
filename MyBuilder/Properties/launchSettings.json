@@ -2,7 +2,7 @@
   "profiles": {
     "MyBuilder": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Users\\Yutaro\\source\\repos\\SampleApplication\\SampleApplication\\SampleApplication.csproj\" -c Release -p \"Any CPU\" -o \"C:\\Temp\\SampleApplication\" -u 2"
+      "commandLineArgs": "\"C:\\Users\\Yutaro\\source\\repos\\SampleApplication\\SampleConsolwApplication\\SampleConsolwApplication.csproj\" -c Release -p \"Any CPU\" -o \"C:\\Temp\\SampleApplication\" -s"
     }
   }
 }

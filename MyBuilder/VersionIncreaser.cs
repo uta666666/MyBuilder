@@ -8,6 +8,11 @@ namespace MyBuilder
 {
     public class VersionIncreaser
     {
+        /// <summary>
+        /// リビジョンをカウントアップする
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
         public static string IncreaseRivisionNumber(string version)
         {
             var versionParts = version.Split('.');
@@ -21,11 +26,15 @@ namespace MyBuilder
                 versionParts[3] = (++revisionNumber).ToString();
             }
 
-            var versioon = string.Join(".", versionParts);
-            Console.WriteLine($"Assembly Version を変更します。（{version}）");
-            return version;
+            var newVersion = string.Join(".", versionParts);
+            return newVersion;
         }
 
+        /// <summary>
+        /// ビルド番号をカウントアップする
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
         public static string IncreaseBuildNumber(string version)
         {
             var versionParts = version.Split('.');
@@ -44,11 +53,15 @@ namespace MyBuilder
                 versionParts[3] = "0";
             }
 
-            var versioon = string.Join(".", versionParts);
-            Console.WriteLine($"Assembly Version を変更します。（{version}）");
-            return version;
+            var newVersion = string.Join(".", versionParts);
+            return newVersion;
         }
 
+        /// <summary>
+        /// マイナーバージョンをカウントアップする
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
         public static string IncreaseMinorVersion(string version)
         {
             var versionParts = version.Split('.');
@@ -72,11 +85,15 @@ namespace MyBuilder
                 versionParts[3] = "0";
             }
 
-            var versioon = string.Join(".", versionParts);
-            Console.WriteLine($"Assembly Version を変更します。（{version}）");
-            return version;
+            var newVersion = string.Join(".", versionParts);
+            return newVersion;
         }
 
+        /// <summary>
+        /// メジャーバージョンをカウントアップする
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
         public static string IncreaseMajorVersion(string version)
         {
             var versionParts = version.Split('.');
@@ -105,9 +122,8 @@ namespace MyBuilder
                 versionParts[3] = "0";
             }
 
-            var versioon = string.Join(".", versionParts);
-            Console.WriteLine($"Assembly Version を変更します。（{version}）");
-            return version;
+            var newVersion = string.Join(".", versionParts);
+            return newVersion;
         }
     }
 }
